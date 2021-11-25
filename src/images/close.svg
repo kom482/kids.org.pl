@@ -1,0 +1,8 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <style type="text/css" id="style2">
+        .st1{stroke:#000000; }
+    </style>
+<path d="M12 4L4 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="st1"/>
+<path d="M4 4L12 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="st1"/>
+
+</svg>
