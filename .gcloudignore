@@ -1,0 +1,22 @@
+#!include:.gitignore
+
+# Git
+.git
+.gitignore
+
+# Build
+!.next/
+
+# Source
+public/
+src/
+tasks/
+
+# Configuration
+.babelrc
+.eslintrc
+.eslintignore
+.gcloudignore
+.prettierrc
+next.config.js
+tsconfig.json

@@ -55,6 +55,9 @@ typings/
 .env
 .env.production
 
+# gcloud environment variables file
+app-env.yaml
+
 # gatsby files
 .cache/
 
@@ -65,10 +68,16 @@ typings/
 yarn-error.log
 .pnp/
 .pnp.js
+
 # Yarn Integrity file
 .yarn-integrity
 
 .terraform
 
+# IDE files
+.vscode
+.idea
+
 .next
+next-env.d.ts
 build
