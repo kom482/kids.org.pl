@@ -110,7 +110,7 @@ const YoutubeVideo: React.FunctionComponent<YoutubeVideoProps> = ({ thumbnail, h
     const image = (
         <VideoContainer onClick={open}>
             <Image src={thumbnail} />
-            <Play src={playIcon} />
+            {iframe && <Play src={playIcon} />}
             <Gradient />
         </VideoContainer>
     );
