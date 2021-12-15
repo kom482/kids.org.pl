@@ -130,9 +130,9 @@ const NewsType = styled.div`
     border: 2px solid ${theme.palette.grayScale.gray200};
 `;
 
-NewsDetailsPage.getInitialProps = async ({ query }) => {
+export const getStaticProps = async ({ params }) => {
     try {
-        const newsId = query.newsId instanceof Array ? query.newsId[0] : query.newsId;
+        const newsId = params.newsId instanceof Array ? params.newsId[0] : params.newsId;
 
         const response = await client.query<{ news: NewsNode; projects: PrismicNodes<ProjectNode> }>({
             query: gql`
@@ -176,13 +176,40 @@ NewsDetailsPage.getInitialProps = async ({ query }) => {
         });
 
         return {
-            news: response.data.news,
-            projects: response.data.projects.edges.map(e => e.node),
+            props: {
+                news: response.data.news,
+                projects: response.data.projects.edges.map(e => e.node),
+            },
         };
     } catch (e) {
         console.error(e);
         throw new Error("Can't fetch news content");
     }
+};
+
+export const getStaticPaths = async () => {
+    const response = await client.query<{ allNewss: IdsNode }>({
+        query: gql`
+           query {
+              allNewss(sortBy: meta_firstPublicationDate_DESC) {
+                edges {
+                  node {
+                    _meta {
+                      uid
+                    }
+                  }
+                }
+              }
+            }
+        `,
+    });
+
+    return {
+        paths: response.data.allNewss.edges.map(e => ({
+            params: { newsId: e.node._meta.uid },
+        })),
+        fallback: false,
+    };
 };
 
 export default NewsDetailsPage;

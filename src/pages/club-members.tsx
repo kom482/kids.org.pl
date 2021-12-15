@@ -22,10 +22,10 @@ type ClubMembersProps = {
 };
 
 const ClubMembers: NextPage<ClubMembersProps> = ({
-    clubMembersPage,
-    clubMembers,
-    joinClubCard
-}) => {
+                                                     clubMembersPage,
+                                                     clubMembers,
+                                                     joinClubCard,
+                                                 }) => {
     return (
         <main>
             <Head>
@@ -39,7 +39,8 @@ const ClubMembers: NextPage<ClubMembersProps> = ({
                             <Row>
                                 <Col>
                                     <CropCorner bottomRight>
-                                        <MainImage src={clubMembersPage.image.url} alt={clubMembersPage.image.alt ?? undefined} />
+                                        <MainImage src={clubMembersPage.image.url}
+                                                   alt={clubMembersPage.image.alt ?? undefined} />
                                     </CropCorner>
                                 </Col>
                             </Row>
@@ -47,7 +48,7 @@ const ClubMembers: NextPage<ClubMembersProps> = ({
                     )}
                     <Section thin>
                         <SectionHeader>{clubMembersPage.title && RichText.asText(clubMembersPage.title)}</SectionHeader>
-                        {clubMembersPage.description && <PrismicParagraph text={clubMembersPage.description} />}                
+                        {clubMembersPage.description && <PrismicParagraph text={clubMembersPage.description} />}
                     </Section>
                 </>
             )}
@@ -76,8 +77,8 @@ const ClubMembers: NextPage<ClubMembersProps> = ({
                 </Section>
             )}
         </main>
-    )
-}
+    );
+};
 
 const ImageSection = styled.section`
     margin-bottom: ${px2rem(60)};
@@ -90,7 +91,7 @@ const MainImage = styled.img`
     object-fit: cover;
 `;
 
-ClubMembers.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const response = await client.query<{
             clubMembersPage: PrismicNodes<ClubMembersPage>
@@ -138,9 +139,11 @@ ClubMembers.getInitialProps = async () => {
         });
 
         return {
-            clubMembersPage: response.data.clubMembersPage?.edges[0]?.node,
-            clubMembers: response.data.clubMembers?.edges[0]?.node.members ?? [],
-            joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
+            props: {
+                clubMembersPage: response.data.clubMembersPage?.edges[0]?.node,
+                clubMembers: response.data.clubMembers?.edges[0]?.node.members ?? [],
+                joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
+            },
         };
     } catch (e) {
         console.error(e);

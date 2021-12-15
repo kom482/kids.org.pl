@@ -56,7 +56,7 @@ const ThankYouImage = styled.img`
     max-width: 100%;
 `;
 
-ThankYou["getInitialProps"] = async () => {
+export const getStaticProps = async () => {
     try {
         const response = await client.query({
             query: gql`
@@ -77,9 +77,11 @@ ThankYou["getInitialProps"] = async () => {
         const { title, description, image } = response.data.allPayment_approvals.edges[0].node;
 
         return {
-            title,
-            description,
-            image,
+            props: {
+                title,
+                description,
+                image,
+            },
         };
     } catch (e) {
         console.error(e);

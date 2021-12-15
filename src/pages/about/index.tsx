@@ -20,7 +20,7 @@ import { px2rem } from "styles/utils";
 import JoinClubCard from "components/JoinClubCard";
 import Head from "next/head";
 
-type AboutProps = { 
+type AboutProps = {
     foundation: FoundationNode;
     joinClubCard?: JoinClubCardNode;
 
@@ -62,25 +62,27 @@ const CenteredCol = styled(Col)`
     margin-bottom: 3rem;
 `;
 
-const About: NextPage<AboutProps> = ({ foundation: {
-    managers,
-    management_title,
-    council_title,
-    counselors,
-    name,
-    slogan,
-    youtube,
-    label_mission,
-    mission,
-    how_do_we_help_title,
-    how_do_we_help_description,
-    how_we_help,
-    office_title,
-    office_image,
-    office_description,
-    office_button_label,
-    office_button_url,
-}, joinClubCard }) => {
+const About: NextPage<AboutProps> = ({
+                                         foundation: {
+                                             managers,
+                                             management_title,
+                                             council_title,
+                                             counselors,
+                                             name,
+                                             slogan,
+                                             youtube,
+                                             label_mission,
+                                             mission,
+                                             how_do_we_help_title,
+                                             how_do_we_help_description,
+                                             how_we_help,
+                                             office_title,
+                                             office_image,
+                                             office_description,
+                                             office_button_label,
+                                             office_button_url,
+                                         }, joinClubCard,
+                                     }) => {
     return (
         <main>
             <Head>
@@ -194,7 +196,7 @@ const About: NextPage<AboutProps> = ({ foundation: {
     );
 };
 
-About["getInitialProps"] = async () => {
+export const getStaticProps = async () => {
     try {
         const response = await client.query<{
             allFoundations: PrismicNodes<FoundationNode>;
@@ -271,9 +273,11 @@ About["getInitialProps"] = async () => {
         });
 
         return {
-            foundation: response.data.allFoundations.edges[0].node,
-            joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
-        }
+            props: {
+                foundation: response.data.allFoundations.edges[0].node,
+                joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
+            },
+        };
     } catch (e) {
         console.error(e);
         throw new Error("Can't fetch foundation content");

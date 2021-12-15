@@ -50,6 +50,13 @@ type PrismicNodes<TNode> = {
     }[];
 };
 
+type IdsNode = PrismicNodes<{
+    _meta: {
+        id: string;
+        uid: string;
+    };
+}>
+
 type PersonNode = MakeOptional<{
     degree: PrismicRichText;
     first_name: PrismicRichText;
@@ -106,12 +113,12 @@ type HowDoWeHelpFoundationPart = {
     how_do_we_help_description?: PrismicRichText | null;
     how_we_help?:
         | {
-              image?: PrismicImage | null;
-              title?: PrismicRichText | null;
-              subtitle?: PrismicRichText | null;
-              subtitle_color?: string | null;
-              description?: PrismicRichText | null;
-          }[]
+        image?: PrismicImage | null;
+        title?: PrismicRichText | null;
+        subtitle?: PrismicRichText | null;
+        subtitle_color?: string | null;
+        description?: PrismicRichText | null;
+    }[]
         | null;
 };
 

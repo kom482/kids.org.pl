@@ -16,6 +16,8 @@ const Root = styled.div``;
 type ProjectsProps = { supporters: CompanyNode[]; mainProjects: ProjectNode[]; projects: ProjectNode[]; completedOnly: boolean; };
 
 const Projects: NextPage<ProjectsProps> = ({ supporters, mainProjects, projects, completedOnly }) => {
+    // TODO: Handle filters change
+
     return (
         <Root>
             <Head>
@@ -43,7 +45,7 @@ const Projects: NextPage<ProjectsProps> = ({ supporters, mainProjects, projects,
                     ))}
                 </Row>
             </Section>
-            
+
             <SupportsUs companies={supporters} />
 
             <Section>
@@ -57,9 +59,7 @@ const Projects: NextPage<ProjectsProps> = ({ supporters, mainProjects, projects,
     );
 };
 
-Projects.getInitialProps = async (ctx) => {
-    const completed = ctx.query.completed;
-
+export const getStaticProps = async (ctx) => {
     try {
         const data = await client.query<{
             allFoundations: PrismicNodes<FoundationNode>;
@@ -79,7 +79,7 @@ Projects.getInitialProps = async (ctx) => {
                     short_description
                 }
 
-                query ProjectsPage($status: String!) {
+                query ProjectsPage {
                     allFoundations {
                         edges {
                             node {
@@ -107,7 +107,7 @@ Projects.getInitialProps = async (ctx) => {
                             }
                         }
                     }
-                    projects: allProjects(where: { main_project_fulltext: "Pozostałe", status_fulltext: $status }) {
+                    projects: allProjects(where: { main_project_fulltext: "Pozostałe", status_fulltext: "Trwający" }) {
                         edges {
                             node {
                                 ...project
@@ -115,20 +115,19 @@ Projects.getInitialProps = async (ctx) => {
                         }
                     }
                 }
-            `,
-            variables: {
-                status: completed === "true" ? "Sukces" : "Trwający",
-            },
+            `
         });
 
         return {
-            supporters:
-                data.data.allFoundations.edges[0]?.node.supporters
-                    .map(s => s.supporter)
-                    .filter((s): s is CompanyNode => !!s) ?? [],
-            mainProjects: data.data.mainProjects.edges.map(e => e.node),
-            projects: data.data.projects.edges.map(e => e.node),
-            completedOnly: completed === "true",
+            props: {
+                supporters:
+                    data.data.allFoundations.edges[0]?.node.supporters
+                        .map(s => s.supporter)
+                        .filter((s): s is CompanyNode => !!s) ?? [],
+                mainProjects: data.data.mainProjects.edges.map(e => e.node),
+                projects: data.data.projects.edges.map(e => e.node),
+                completedOnly: false
+            },
         };
     } catch (e) {
         console.error(e);

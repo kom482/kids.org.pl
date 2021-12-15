@@ -17,10 +17,10 @@ import Head from "next/head";
 type HowDoWeHelpProps = HowDoWeHelpFoundationPart;
 
 const HowDoWeHelp: NextPage<HowDoWeHelpProps> = ({
-    how_do_we_help_title: title,
-    how_do_we_help_description: description,
-    how_we_help: howWeHelp,
-}) => {
+                                                     how_do_we_help_title: title,
+                                                     how_do_we_help_description: description,
+                                                     how_we_help: howWeHelp,
+                                                 }) => {
     return (
         <main>
             <Head>
@@ -75,7 +75,7 @@ const SectionSubtitle = styled.h4<{ color: string }>`
     color: ${({ color }) => color};
 `;
 
-HowDoWeHelp["getInitialProps"] = async () => {
+export const getStaticProps = async () => {
     try {
         const response = await client.query<{
             allFoundations: PrismicNodes<FoundationNode>;
@@ -101,7 +101,9 @@ HowDoWeHelp["getInitialProps"] = async () => {
             `,
         });
 
-        return response.data.allFoundations.edges[0].node;
+        return {
+            props: response.data.allFoundations.edges[0].node,
+        };
     } catch (e) {
         console.error(e);
         throw new Error("Can't fetch how do we help content");

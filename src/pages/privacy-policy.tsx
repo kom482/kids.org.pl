@@ -24,13 +24,15 @@ const PrivacyPolicy: NextPage<PrivacyPolicy> = props => {
     );
 };
 
-PrivacyPolicy.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const data = await fetchData();
         const privacyPolicy = data.data.allPrivacy_policys.edges[0].node;
         return {
-            header: privacyPolicy.header[0].text,
-            content: privacyPolicy.privacy_policy,
+            props: {
+                header: privacyPolicy.header[0].text,
+                content: privacyPolicy.privacy_policy,
+            },
         };
     } catch (e) {
         console.error(e);

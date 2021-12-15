@@ -72,7 +72,7 @@ const Text = styled.p`
     color: ${theme.palette.grayScale.gray600};
 `;
 
-JoinClub.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const data = await client.query<{
             allJoin_clubs: PrismicNodes<JoinClubNode>;
@@ -102,7 +102,9 @@ JoinClub.getInitialProps = async () => {
         });
 
         return {
-            joinClub: data.data.allJoin_clubs.edges[0]?.node
+            props: {
+                joinClub: data.data.allJoin_clubs.edges[0]?.node,
+            },
         };
     } catch (e) {
         console.error(e);

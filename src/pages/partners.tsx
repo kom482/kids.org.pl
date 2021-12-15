@@ -18,16 +18,16 @@ import { px2rem } from "styles/utils";
 import Share from "components/Share";
 
 const Partners: NextPage<PartnersNode> = ({
-    main_image,
-    header,
-    description,
-    support_us_header,
-    companies,
-    how_can_help_header,
-    how_can_help_description,
-    how_company_can_help,
-    send_submission,
-}) => {
+                                              main_image,
+                                              header,
+                                              description,
+                                              support_us_header,
+                                              companies,
+                                              how_can_help_header,
+                                              how_can_help_description,
+                                              how_company_can_help,
+                                              send_submission,
+                                          }) => {
     const [showAllCompanies, setShowAllCompanies] = useState(false);
     return (
         <main>
@@ -59,11 +59,11 @@ const Partners: NextPage<PartnersNode> = ({
 
                         <Tiles>
                             {companies &&
-                                companies
-                                    .slice(0, showAllCompanies ? companies.length : 16)
-                                    .map((item, i) =>
-                                        item.company ? <CompanyTile key={i} company={item.company} /> : null,
-                                    )}
+                            companies
+                                .slice(0, showAllCompanies ? companies.length : 16)
+                                .map((item, i) =>
+                                    item.company ? <CompanyTile key={i} company={item.company} /> : null,
+                                )}
                         </Tiles>
                     </Col>
                 </Row>
@@ -92,16 +92,16 @@ const Partners: NextPage<PartnersNode> = ({
                 </Row>
                 <Row>
                     {how_company_can_help &&
-                        how_company_can_help.map((item, i) => (
-                            <Col md={4} key={i}>
-                                {item.how_help_header && (
-                                    <HowHelpHeader>{RichText.asText(item.how_help_header)}</HowHelpHeader>
-                                )}
-                                {item.how_help_description && (
-                                    <SmallBody>{RichText.asText(item.how_help_description)}</SmallBody>
-                                )}
-                            </Col>
-                        ))}
+                    how_company_can_help.map((item, i) => (
+                        <Col md={4} key={i}>
+                            {item.how_help_header && (
+                                <HowHelpHeader>{RichText.asText(item.how_help_header)}</HowHelpHeader>
+                            )}
+                            {item.how_help_description && (
+                                <SmallBody>{RichText.asText(item.how_help_description)}</SmallBody>
+                            )}
+                        </Col>
+                    ))}
                 </Row>
             </Section>
             {send_submission && (
@@ -152,7 +152,7 @@ const CenterButton = styled(Col)`
     justify-content: center;
 `;
 
-Partners.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const data = await client.query<{
             allPartnerss: PrismicNodes<PartnersNode>;
@@ -199,7 +199,9 @@ Partners.getInitialProps = async () => {
             `,
         });
 
-        return data.data.allPartnerss.edges[0]?.node;
+        return {
+            props: data.data.allPartnerss.edges[0]?.node,
+        };
     } catch (e) {
         console.error(e);
         throw new Error("Can't fetch common content");

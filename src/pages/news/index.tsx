@@ -117,7 +117,7 @@ const FilterButtons = styled.div`
     }
 `;
 
-News.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const data = await client.query<{
             allFoundations: PrismicNodes<FoundationNode>;
@@ -169,9 +169,11 @@ News.getInitialProps = async () => {
         const foundationNode = data.data.allFoundations.edges[0]?.node;
 
         return {
-            mainNews: foundationNode?.main_news ?? undefined,
-            newses: data.data.news.edges.map(n => n.node).filter((n): n is NewsNode => !!n) ?? [],
-            articles: foundationNode?.articles.filter((a): a is ArticleNode => !!a) ?? [],
+            props: {
+                mainNews: foundationNode?.main_news ?? undefined,
+                newses: data.data.news.edges.map(n => n.node).filter((n): n is NewsNode => !!n) ?? [],
+                articles: foundationNode?.articles.filter((a): a is ArticleNode => !!a) ?? [],
+            },
         };
     } catch (e) {
         console.error(e);

@@ -8,7 +8,7 @@ import Section from "components/Section";
 import SectionHeader from "components/SectionHeader";
 import Tiles from "components/Tiles";
 import { PrismicParagraph } from "components/typography";
-import { NextPage, GetServerSideProps } from "next";
+import { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import { RichText } from "prismic-reactjs";
 import React, { useMemo } from "react";
@@ -35,8 +35,6 @@ const ProjectDetailsPage: NextPage<ProjectDetailsPageProps> = ({ project, donati
     const hasTeam = !!project.team?.length;
 
     const hasPartners = !!project.partners?.length;
-
-    // console.warn(donations);
 
     const stats = useMemo(() => {
         const statistics: ProjectStatistic[] = [];
@@ -126,13 +124,13 @@ const ProjectDetailsPage: NextPage<ProjectDetailsPageProps> = ({ project, donati
                             <MembersContainer>
                                 <Row>
                                     {project.leaders &&
-                                        project.leaders.map((l, i) =>
-                                            l.leader ? (
-                                                <Col md="4" key={i}>
-                                                    <Person data={l.leader} />
-                                                </Col>
-                                            ) : null,
-                                        )}
+                                    project.leaders.map((l, i) =>
+                                        l.leader ? (
+                                            <Col md="4" key={i}>
+                                                <Person data={l.leader} />
+                                            </Col>
+                                        ) : null,
+                                    )}
                                 </Row>
                             </MembersContainer>
 
@@ -155,10 +153,10 @@ const ProjectDetailsPage: NextPage<ProjectDetailsPageProps> = ({ project, donati
 
                             <MembersContainer>
                                 {project.team?.map((t, i) =>
-                                        t.team_member ? (
-                                            <Person key={i} compact data={t.team_member} />
-                                        ) : null,
-                                    )}
+                                    t.team_member ? (
+                                        <Person key={i} compact data={t.team_member} />
+                                    ) : null,
+                                )}
                             </MembersContainer>
                         </Col>
                     </Row>
@@ -175,9 +173,9 @@ const MembersContainer = styled.div`
     padding-top: ${px2rem(20)};
 `;
 
-export const getServerSideProps: GetServerSideProps = async ({ query}): Promise<{ props: ProjectDetailsPageProps }> => {
+export const getStaticProps: GetStaticProps = async ({ params }): Promise<{ props: ProjectDetailsPageProps }> => {
     try {
-        const projectId = query.projectId instanceof Array ? query.projectId[0] : query.projectId;
+        const projectId = params?.projectId instanceof Array ? params?.projectId[0] : params?.projectId;
 
         const response = await client.query<{ project: ProjectNode, donations?: TPayProjectDonations }>({
             query: gql`
@@ -265,19 +263,41 @@ export const getServerSideProps: GetServerSideProps = async ({ query}): Promise<
             sum: 5562,
         };
 
-        console.warn("Donations: ");
-        console.warn(donations);
-
         return {
             props: {
                 project,
                 donations,
-            }
+            },
         };
     } catch (e) {
         console.error(e);
         throw new Error("Can't fetch project content");
     }
+};
+
+export const getStaticPaths = async () => {
+    const response = await client.query<{ allProjects: IdsNode }>({
+        query: gql`
+           query {
+              allProjects {
+                edges {
+                  node {
+                    _meta {
+                      uid
+                    }
+                  }
+                }
+              }
+            }
+        `,
+    });
+
+    return {
+        paths: response.data.allProjects.edges.map(e => ({
+            params: { projectId: e.node._meta.uid },
+        })),
+        fallback: false,
+    };
 };
 
 export default ProjectDetailsPage;

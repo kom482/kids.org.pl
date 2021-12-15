@@ -36,17 +36,17 @@ type HomeProps = {
 };
 
 const Home: NextPage<HomeProps> = ({
-    articles,
-    changeHospitals,
-    supporters,
-    mainProjects,
-    projects,
-    completedProjects,
-    newses,
-    mainNews,
-    clubMembers,
-    joinClubCard
-}) => {
+                                       articles,
+                                       changeHospitals,
+                                       supporters,
+                                       mainProjects,
+                                       projects,
+                                       completedProjects,
+                                       newses,
+                                       mainNews,
+                                       clubMembers,
+                                       joinClubCard,
+                                   }) => {
     return (
         <Root>
             <Head>
@@ -79,7 +79,8 @@ const Home: NextPage<HomeProps> = ({
 
             {completedProjects && (
                 <Section>
-                    <SectionHeader extras={<EmphasizedLink href="/projects?completed=true">Zobacz wszystkie sukcesy</EmphasizedLink>}>
+                    <SectionHeader extras={<EmphasizedLink href="/projects?completed=true">Zobacz wszystkie
+                        sukcesy</EmphasizedLink>}>
                         Sukcesy
                     </SectionHeader>
                     <Row>
@@ -108,7 +109,8 @@ const Home: NextPage<HomeProps> = ({
 
             {clubMembers && (
                 <Section>
-                    <SectionHeader extras={<EmphasizedLink href="/club-members">Zobacz wszystkich klubowiczów</EmphasizedLink>}>
+                    <SectionHeader
+                        extras={<EmphasizedLink href="/club-members">Zobacz wszystkich klubowiczów</EmphasizedLink>}>
                         Lista klubowiczów
                     </SectionHeader>
 
@@ -145,7 +147,7 @@ const Home: NextPage<HomeProps> = ({
     );
 };
 
-Home.getInitialProps = async () => {
+export const getStaticProps = async () => {
     try {
         const response = await client.query<{
             allChange_hospitalss: PrismicNodes<ChangeHospitalsNode>;
@@ -290,17 +292,19 @@ Home.getInitialProps = async () => {
         const foundationNode = response.data.allFoundations.edges[0]?.node;
 
         return {
-            changeHospitals: response.data.allChange_hospitalss.edges[0]?.node ?? undefined,
-            mainNews: foundationNode?.main_news ?? undefined,
-            // I can't seem to find a way to do slice with prismic - this might be a problem in the future if there are many articles
-            newses: (foundationNode?.newses.map(n => n.news).filter((n): n is NewsNode => !!n) ?? []).splice(0, 3),
-            articles: foundationNode?.articles.filter((a): a is ArticleNode => !!a) ?? [],
-            supporters: foundationNode?.supporters.map(s => s.supporter).filter((s): s is CompanyNode => !!s) ?? [],
-            mainProjects: response.data.mainProjects.edges.map(e => e.node),
-            projects: response.data.projects.edges.map(e => e.node),
-            completedProjects: response.data.completedProjects.edges.map(e => e.node),
-            clubMembers: response.data.clubMembers?.edges[0]?.node.members ?? [],
-            joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
+            props: {
+                changeHospitals: response.data.allChange_hospitalss.edges[0]?.node ?? undefined,
+                mainNews: foundationNode?.main_news ?? undefined,
+                // I can't seem to find a way to do slice with prismic - this might be a problem in the future if there are many articles
+                newses: (foundationNode?.newses.map(n => n.news).filter((n): n is NewsNode => !!n) ?? []).splice(0, 3),
+                articles: foundationNode?.articles.filter((a): a is ArticleNode => !!a) ?? [],
+                supporters: foundationNode?.supporters.map(s => s.supporter).filter((s): s is CompanyNode => !!s) ?? [],
+                mainProjects: response.data.mainProjects.edges.map(e => e.node),
+                projects: response.data.projects.edges.map(e => e.node),
+                completedProjects: response.data.completedProjects.edges.map(e => e.node),
+                clubMembers: response.data.clubMembers?.edges[0]?.node.members ?? [],
+                joinClubCard: response.data.joinClubCards.edges[0]?.node ?? undefined,
+            },
         };
     } catch (e) {
         console.error(e);
