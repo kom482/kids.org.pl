@@ -18,5 +18,4 @@ tasks/
 .eslintignore
 .gcloudignore
 .prettierrc
-next.config.js
 tsconfig.json
