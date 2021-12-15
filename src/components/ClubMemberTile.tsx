@@ -7,7 +7,7 @@ import { Tile } from "components/Tiles";
 import { px2rem } from "styles/utils";
 import { theme } from "styles/theme";
 import useSetUnset from "utils/useSetUnset";
-import closeIcon from "images/close.svg";
+import closeIcon from "images/close.svg?url";
 
 type ClubMemberTileProps = {
     member: ClubMemberNode;

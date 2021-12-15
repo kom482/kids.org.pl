@@ -184,7 +184,7 @@ const JoinClub: FunctionComponent<JoinClubProps> = ({ title, consentText, button
                 { key: "phoneNumber", value: phoneNumber },
             ]);
 
-            fetch("/mail", {
+            fetch("/api/mail", {
                 method: "POST",
                 headers,
                 body,

@@ -1,7 +1,4 @@
 import { css } from "styled-components";
-import interRegular from "./fonts/interRegular.otf";
-import interSemiBold from "./fonts/interSemiBold.otf";
-import introBlack from "./fonts/introBlack.otf";
 
 const fonts = css`
     :root {
@@ -11,19 +8,19 @@ const fonts = css`
 
     @font-face {
         font-family: Inter;
-        src: url(${interRegular});
+        src: url(/fonts/interRegular.otf);
         font-weight: 400;
     }
 
     @font-face {
         font-family: Inter;
-        src: url(${interSemiBold});
+        src: url(/fonts/interSemiBold.otf);
         font-weight: 600;
     }
 
     @font-face {
         font-family: Intro;
-        src: url(${introBlack});
+        src: url(/fonts/introBlack.otf);
         font-weight: 900;
     }
 `;

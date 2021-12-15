@@ -1,21 +1,11 @@
-declare module "*.svg?sprite" {
-    const svg: "svg";
-    export default svg;
-}
-
-declare module "*.svg?include" {
-    const svg: string;
-    export default svg;
-}
-
-declare module "*.svg?react" {
-    const svg: "svg";
-    export default svg;
+declare module "*.svg?url" {
+    const url: string;
+    export default url;
 }
 
 declare module "*.svg" {
-    const url: string;
-    export default url;
+    const svg: "svg";
+    export default svg;
 }
 
 declare module "*.png" {

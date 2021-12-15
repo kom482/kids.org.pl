@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
-import fb from "images/share/fb.svg";
-import linkedIn from "images/share/linkedin.svg";
-import twitter from "images/share/twitter.svg";
-import mail from "images/share/mail.svg";
+import fb from "images/share/fb.svg?url";
+import linkedIn from "images/share/linkedin.svg?url";
+import twitter from "images/share/twitter.svg?url";
+import mail from "images/share/mail.svg?url";
 
 const Root = styled.div`
     width: 100%;

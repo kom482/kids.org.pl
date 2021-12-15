@@ -1,4 +1,4 @@
-import chevronRight from "images/chevron-right.svg";
+import chevronRight from "images/chevron-right.svg?url";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { routes } from "services/routes";

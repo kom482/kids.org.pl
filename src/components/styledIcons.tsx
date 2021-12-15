@@ -1,5 +1,5 @@
-import ChevronRight from "images/chevron-right.svg?react";
-import CloseIcon from "images/close.svg?react";
+import ChevronRight from "images/chevron-right.svg";
+import CloseIcon from "images/close.svg";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 

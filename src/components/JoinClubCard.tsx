@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import { Col, Row } from "react-bootstrap";
 import { LinkButton } from "components/Button";
-import tick from "images/tick.svg";
-import arrowRight from "images/arrow-right-bold.svg";
+import tick from "images/tick.svg?url";
+import arrowRight from "images/arrow-right-bold.svg?url";
 
 
 const Card = styled.div`

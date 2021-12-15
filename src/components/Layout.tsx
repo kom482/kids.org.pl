@@ -1,5 +1,5 @@
-import LeftTriangles from "images/triangles-left.svg";
-import RightTriangles from "images/triangles-right.svg";
+import LeftTriangles from "images/triangles-left.svg?url";
+import RightTriangles from "images/triangles-right.svg?url";
 import React from "react";
 import styled from "styled-components";
 import { breakPoints } from "styles/mq";

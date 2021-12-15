@@ -25,11 +25,11 @@
     "target": "esnext",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true
+    "noEmit": true,
+    "incremental": true
   },
   "include": [
-    "src",
-    "next.config.js"
+    "src"
   ],
   "exclude": [
     "node_modules"

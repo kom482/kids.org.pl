@@ -1,5 +1,5 @@
-import ChevronDown from "images/chevron-down.svg?react";
-import ChevronUp from "images/chevron-up.svg?react";
+import ChevronDown from "images/chevron-down.svg";
+import ChevronUp from "images/chevron-up.svg";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { routes } from "services/routes";
 import styled from "styled-components";

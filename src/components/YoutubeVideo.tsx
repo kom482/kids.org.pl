@@ -1,4 +1,4 @@
-import closeIcon from "images/close.svg";
+import closeIcon from "images/close.svg?url";
 import playIcon from "images/home/play.png";
 import * as React from "react";
 import { useCallback, useState } from "react";

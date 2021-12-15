@@ -137,7 +137,7 @@ function useDonations(projectId: string, projectName: string, smallInput?: boole
             projectName,
         });
 
-        location.href = `/donate/${projectId}?${query}`;
+        location.href = `/api/donate/${projectId}?${query}`;
     }, [donation, projectName, projectId]);
 
     const donationOptions: Record<"10" | "50" | "100" | "custom", ReactNode> = useMemo(() => ({
