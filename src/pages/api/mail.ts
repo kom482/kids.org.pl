@@ -1,6 +1,6 @@
 import getConfig from "next/config";
 import sgMail from "@sendgrid/mail";
-import htmlEncode from 'htmlencode'
+import { htmlEncode } from "htmlencode";
 
 
 const { serverRuntimeConfig } = getConfig();
