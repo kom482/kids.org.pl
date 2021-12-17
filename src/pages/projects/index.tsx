@@ -10,13 +10,21 @@ import Row from "react-bootstrap/Row";
 import client from "services/apollo/client";
 import styled from "styled-components";
 import StatusFilter from "components/projects/StatusFilter";
+import { useRouter } from "next/router";
 
 const Root = styled.div``;
 
-type ProjectsProps = { supporters: CompanyNode[]; mainProjects: ProjectNode[]; projects: ProjectNode[]; completedOnly: boolean; };
+type ProjectsProps = {
+    supporters: CompanyNode[];
+    mainProjects: ProjectNode[];
+    finishedProjects: ProjectNode[];
+    ongoingProjects: ProjectNode[];
+};
 
-const Projects: NextPage<ProjectsProps> = ({ supporters, mainProjects, projects, completedOnly }) => {
-    // TODO: Handle filters change
+const Projects: NextPage<ProjectsProps> = ({ supporters, mainProjects, finishedProjects, ongoingProjects }) => {
+    const router = useRouter();
+    const completedOnly = router.query.completed === "true";
+    const projects = completedOnly ? finishedProjects : ongoingProjects;
 
     return (
         <Root>
@@ -64,7 +72,8 @@ export const getStaticProps = async (ctx) => {
         const data = await client.query<{
             allFoundations: PrismicNodes<FoundationNode>;
             mainProjects: PrismicNodes<ProjectNode>;
-            projects: PrismicNodes<ProjectNode>;
+            finishedProjects: PrismicNodes<ProjectNode>;
+            ongoingProjects: PrismicNodes<ProjectNode>;
         }>({
             query: gql`
                 fragment project on Project {
@@ -107,7 +116,14 @@ export const getStaticProps = async (ctx) => {
                             }
                         }
                     }
-                    projects: allProjects(where: { main_project_fulltext: "Pozostałe", status_fulltext: "Trwający" }) {
+                    finishedProjects: allProjects(where: { main_project_fulltext: "Pozostałe", status_fulltext: "Sukces" }) {
+                        edges {
+                            node {
+                                ...project
+                            }
+                        }
+                    }
+                    ongoingProjects: allProjects(where: { main_project_fulltext: "Pozostałe", status_fulltext: "Trwający" }) {
                         edges {
                             node {
                                 ...project
@@ -115,7 +131,7 @@ export const getStaticProps = async (ctx) => {
                         }
                     }
                 }
-            `
+            `,
         });
 
         return {
@@ -125,8 +141,8 @@ export const getStaticProps = async (ctx) => {
                         .map(s => s.supporter)
                         .filter((s): s is CompanyNode => !!s) ?? [],
                 mainProjects: data.data.mainProjects.edges.map(e => e.node),
-                projects: data.data.projects.edges.map(e => e.node),
-                completedOnly: false
+                finishedProjects: data.data.finishedProjects.edges.map(e => e.node),
+                ongoingProjects: data.data.ongoingProjects.edges.map(e => e.node),
             },
         };
     } catch (e) {

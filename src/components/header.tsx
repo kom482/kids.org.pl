@@ -15,8 +15,16 @@ type HeaderProps = {
     items: CommonContent["header"];
 };
 
+const isSelected = (current, target) => {
+    const currentWithoutStartingSlash = current.substring(1);
+    const targetWithoutStartingSlash = target.substring(1);
+
+    return (currentWithoutStartingSlash === "" && targetWithoutStartingSlash === "")
+        || targetWithoutStartingSlash && currentWithoutStartingSlash.includes(targetWithoutStartingSlash);
+};
+
 const Header: React.FunctionComponent<HeaderProps> = props => {
-    const { asPath } = useRouter();
+    const { pathname } = useRouter();
     const [isOpenMobileNavigation, setIsOpenMobileNavigation] = useState(false);
 
     return (
@@ -36,7 +44,7 @@ const Header: React.FunctionComponent<HeaderProps> = props => {
                         {routes.header.map(item => (
                             <Link href={item.to} key={item.to}>
                                 <NavbarLink href={item.to}>
-                                    {item.to === asPath ? (
+                                    {isSelected(pathname, item.to) ? (
                                         <SelectedNavItem>{item.name}</SelectedNavItem>
                                     ) : (
                                         <NavItem>{item.name}</NavItem>
