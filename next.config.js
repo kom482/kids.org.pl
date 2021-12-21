@@ -25,6 +25,19 @@ module.exports = {
 
         return config;
     },
+
+    headers: () => ([
+        {
+            source: "/fonts/(.*).otf",
+            headers: [
+                {
+                    key: "Cache-Control",
+                    value: "public, max-age: 31536000, immutable",
+                },
+            ],
+        },
+    ]),
+
     serverRuntimeConfig: {
         port: Number(process.env.PORT || 3000),
         tpayMerchantId: process.env.TPAY_MERCHANT_ID,
