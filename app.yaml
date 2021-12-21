@@ -1,8 +1,0 @@
-includes:
-  - app-env.yaml
-
-runtime: nodejs12
-
-automatic_scaling:
-  min_instances: 1
-  max_instances: 1
