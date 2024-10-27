@@ -279,7 +279,7 @@ export const getStaticPaths = async () => {
     const response = await client.query<{ allProjects: IdsNode }>({
         query: gql`
            query {
-              allProjects {
+              allProjects(first: 500) {
                 edges {
                   node {
                     _meta {
